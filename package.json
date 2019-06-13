@@ -57,6 +57,8 @@
   "dependencies": {
     "is": "^3.3.0",
     "lodash": "^4.17.11",
+    "node-fetch": "^2.6.0",
+    "node-rsa": "^1.0.5",
     "winston": "^3.2.1"
   }
 }
