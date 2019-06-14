@@ -156,10 +156,6 @@ function () {
         yield this.noti(ret.noti, ctx);
       }
 
-      if (ret.retUrl) {
-        return ctx.redirect(ret.retUrl);
-      }
-
       if (ret.noti && ret.noti.url) {
         const ok = this.noti(ctx, ret.noti);
 
@@ -168,9 +164,14 @@ function () {
         }
       }
 
+      if (ret.retUrl) {
+        return ctx.redirect(ret.retUrl);
+      }
+
       ctx.status = 200;
       ctx.body = ret.body;
     } catch (error) {
+      logger.error(error);
       ctx.status = 500;
       ctx.body = {
         message: error.message

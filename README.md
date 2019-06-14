@@ -1,5 +1,6 @@
 # juglans-openapi
     插件涉及的算法 RSA PKCS#1, 哈希使用SHA256
+
 ## 参数
     app_id         String           是     分配给开发者的应用ID
     method         String           是     接口名称 xxx.xxx.xx.xx
@@ -14,6 +15,54 @@
     app_auth_token String           否     应用授权
     biz_content    String           是     请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递
 ## Example
+```shell
+curl -H "Content-Type:application/json" -H "Data_Type:msg" -X POST --data  \
+{
+	"app_id": "xxx",
+	"method": "test.hello",
+	"format": "xxx",
+	"return_url": "xxx",
+	"charset": "xxx",
+	"sign": "jzUFVsfvcPFsX+3ybX+rZe1yUJjdT/cP42awhlaERd69Br/B1n6/Gj46i6FtxvWU7bU8Oa/2SIUWp9iHdx3H745tXhLB900JKRbZRHjKUPHeXCODb2j/NE8QygTI4VcVqvDF9SDrRgO+vJUcch2Z6bFA3rtLrZFXIBUja8Y4DAE=",
+	"sign_type": "xxx",
+	"timestamp": "xxx",
+	"notify_url": "xxx",
+	"biz_content": "xxx",
+	"version": "1.0"
+} \
+http://127.0.0.1:3000/api/v1/gateway?accessToken=DEBUG
+```
+
+## RSA Generate Key
+### Note
+    // PKCS1 header format
+    // For private key
+    -----BEGIN RSA PRIVATE KEY-----
+    -----END RSA PRIVATE KEY-----
+    // For public key
+    -----BEGIN RSA PUBLIC KEY-----
+    -----END RSA PUBLIC KEY-----
+
+    // and PKCS8 header format
+    // For private key
+    -----BEGIN PRIVATE KEY-----
+    -----END PRIVATE KEY-----
+    // For public key 
+    -----BEGIN PUBLIC KEY-----
+    -----END PUBLIC KEY-----
+
+### Generate private key
+```shell
+openssl genrsa -out private.pem 1024
+```
+### Generate public key
+```shell
+openssl rsa -in private.pem -pubout > public.pem
+```
+### PKCS8 public key to PKCS1 public key format
+```shell
+openssl rsa -pubin -in public.pem -RSAPublicKey_out
+```
 
 ## MIT License
 
