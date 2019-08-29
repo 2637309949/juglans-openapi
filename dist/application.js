@@ -145,30 +145,37 @@ OpenApi.prototype.requestHandle =
 /*#__PURE__*/
 function () {
   var _ref5 = _asyncToGenerator(function* (ctx) {
-    this.validator.addSchema(utils.formModel, utils.formModelName);
-    const puData = yield utils.getForm(ctx, this.validator);
-    const appKeySecret = yield this.appAuth(puData, ctx);
-    const handler = yield this.findVoke(puData.method, puData.version);
-    const ret = yield handler.voke(appKeySecret, puData);
+    try {
+      this.validator.addSchema(utils.formModel, utils.formModelName);
+      const puData = yield utils.form(ctx, this.validator);
+      const appKeySecret = yield this.appAuth(puData, ctx);
+      const handler = yield this.findVoke(puData.method, puData.version);
+      const ret = yield handler.voke(appKeySecret, puData);
 
-    if (ret.noti && ret.noti.url) {
-      yield this.noti(ret.noti, ctx);
-    }
-
-    if (ret.noti && ret.noti.url) {
-      const ok = this.noti(ctx, ret.noti);
-
-      if (!ok) {
-        logger.warn('noti to app:', appKeySecret.AppId, ' error');
+      if (ret.noti && ret.noti.url) {
+        yield this.noti(ret.noti, ctx);
       }
-    }
 
-    if (ret.retUrl) {
-      return ctx.redirect(ret.retUrl);
-    }
+      if (ret.noti && ret.noti.url) {
+        const ok = this.noti(ctx, ret.noti);
 
-    ctx.status = 200;
-    ctx.body = ret.body;
+        if (!ok) {
+          logger.warn('noti to app:', appKeySecret.AppId, ' error');
+        }
+      }
+
+      if (ret.retUrl) {
+        return ctx.redirect(ret.retUrl);
+      }
+
+      ctx.status = 200;
+      ctx.body = ret.body;
+    } catch (error) {
+      ctx.status = 500;
+      ctx.body = {
+        message: error.message
+      };
+    }
   });
 
   return function (_x7) {

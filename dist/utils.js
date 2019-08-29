@@ -36,11 +36,11 @@ repo.formModel = {
     },
     'return_url': {
       'type': 'string',
-      'required': true
+      'required': false
     },
     'sign_type': {
       'type': 'string',
-      'required': true
+      'required': false
     },
     'timestamp': {
       'type': 'string',
@@ -52,11 +52,11 @@ repo.formModel = {
     },
     'notify_url': {
       'type': 'string',
-      'required': true
+      'required': false
     },
     'app_auth_token': {
       'type': 'string',
-      'required': true
+      'required': false
     },
     'biz_content': {
       'type': 'string',
@@ -65,7 +65,7 @@ repo.formModel = {
   }
 };
 
-repo.getForm = function (ctx, validator) {
+repo.form = function (ctx, validator) {
   let puData;
   const method = ctx.method.toUpperCase();
 
@@ -73,9 +73,13 @@ repo.getForm = function (ctx, validator) {
     puData = ctx.request.body;
   } else {
     puData = ctx.query;
-  } // const validateRet = validator.validate(puData, validator.schemas['/openapi.puData'])
-  // console.log(validateRet)
+  }
 
+  const validateRet = validator.validate(puData, validator.schemas['/openapi.puData']);
+
+  if (validateRet.errors.length > 0) {
+    throw new Error(validateRet.errors);
+  }
 
   return puData;
 };
