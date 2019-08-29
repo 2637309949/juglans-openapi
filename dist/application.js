@@ -17,10 +17,12 @@ const utils = require('./utils');
 
 const logger = require('./logger');
 
+const options = require('./options');
+
 function OpenApi() {
   let {
     urlPrefix,
-    Auth
+    Auth = utils.defaultAuth
   } = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   if (!(this instanceof OpenApi)) {
@@ -30,7 +32,6 @@ function OpenApi() {
     });
   }
 
-  assert.ok(is.function(Auth), 'Auth can not be empty!');
   assert.ok(is.string(urlPrefix), 'urlPrefix can not be empty!');
   this.options = {
     urlPrefix,
@@ -38,6 +39,18 @@ function OpenApi() {
   };
   this.apis = OpenApi.apis;
 }
+
+OpenApi.prototype.addOptions = function () {
+  for (var _len = arguments.length, opts = new Array(_len), _key = 0; _key < _len; _key++) {
+    opts[_key] = arguments[_key];
+  }
+
+  for (const opt of opts) {
+    opt.apply(this);
+  }
+
+  return this;
+};
 
 OpenApi.prototype.plugin = function (_ref) {
   let {
@@ -184,4 +197,5 @@ function () {
 }();
 
 module.exports = OpenApi;
+module.exports.options = options;
 module.exports.apis = [];

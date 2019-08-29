@@ -175,3 +175,11 @@ ${appKeySecret.privateKey}
     throw new Error('sign error');
   }
 };
+
+repo.defaultAuth = function (AppId) {
+  return {
+    appID: '',
+    publicKey: ``,
+    privateKey: ``
+  };
+};
