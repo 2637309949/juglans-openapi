@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "is": "^3.3.0",
-    "juglans-addition": "^1.0.7",
+    "juglans-addition": "^1.0.9",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
     "node-rsa": "^1.0.5"
